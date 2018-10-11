@@ -1,8 +1,12 @@
 object test {
-  println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
+  println("Welcome to the Scala worksheet")      
   
-  println("try it again")                         //> try it again
+  println("try it again")                       
   
+	//val t: List[Int] = List(1, 2, 3, 4, 5)
+	
+	//val s = 2 :: t
+
   trait List[+T] {
   	def isEmpty: Boolean
   	def head: T
