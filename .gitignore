@@ -3,6 +3,7 @@
 .DS_Store
 /bin/
 /.settings/
+/.worksheet/
 
 .cache-main
 .classpath

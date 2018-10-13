@@ -1,11 +1,8 @@
 object test {
-  println("Welcome to the Scala worksheet")      
+  /*
+  println("Welcome to the Scala worksheet")
   
-  println("try it again")                       
-  
-	//val t: List[Int] = List(1, 2, 3, 4, 5)
-	
-	//val s = 2 :: t
+  println("try it again")
 
   trait List[+T] {
   	def isEmpty: Boolean
@@ -33,10 +30,9 @@ object test {
   	def apply[T](): List[T] = Nil
   }
   
-  List(1, 4)                                      //> res0: test.List[Int] = 1-4-.
-  List("ready", "set", "go")                      //> res1: test.List[String] = ready-set-go-.
+  List(1, 4)
+  List("ready", "set", "go")
   
-  /*
   trait Expr {
   	def isNumber: Boolean
   	def isSum: Boolean
@@ -108,14 +104,81 @@ object test {
   case class Product(l: Expr, r: Expr) extends Expr
 
   val e1 = Sum(Number(3), Number(9))              //> e1  : test.Sum = Sum(Number(3),Number(9))
-  e1.show                                         //> res2: String = 3 + 9
-  e1.eval                                         //> res3: Int = 12
+  e1.show                                         //> res0: String = 3 + 9
+  e1.eval                                         //> res1: Int = 12
 
   val e2 = Sum(Product(Number(2), Variable("x")), Variable("y"))
                                                   //> e2  : test.Sum = Sum(Product(Number(2),Variable(x)),Variable(y))
-  e2.show                                         //> res4: String = 2 * x + y
+  e2.show                                         //> res2: String = 2 * x + y
   //e2.eval
   val e3 = Product(Sum(Number(2), Variable("x")), Variable("y"))
                                                   //> e3  : test.Product = Product(Sum(Number(2),Variable(x)),Variable(y))
-  e3.show                                         //> res5: String = (2 + x) * y
+  e3.show                                         //> res3: String = (2 + x) * y
+  
+	val s: List[Int] = List(1, 2, 3, 4, 5)    //> s  : List[Int] = List(1, 2, 3, 4, 5)
+	val t = 2 :: s                            //> t  : List[Int] = List(2, 1, 2, 3, 4, 5)
+	
+	t.length                                  //> res4: Int = 6
+	t.last                                    //> res5: Int = 5
+	t.init                                    //> res6: List[Int] = List(2, 1, 2, 3, 4)
+	t.head                                    //> res7: Int = 2
+	t.tail                                    //> res8: List[Int] = List(1, 2, 3, 4, 5)
+	t take 3                                  //> res9: List[Int] = List(2, 1, 2)
+	t drop 3                                  //> res10: List[Int] = List(3, 4, 5)
+	t apply 2                                 //> res11: Int = 2
+	t(3)                                      //> res12: Int = 3
+	t(0)                                      //> res13: Int = 2
+	
+	val u = s ::: t                           //> u  : List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4, 5)
+	val v = s ++ t                            //> v  : List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4, 5)
+	u.reverse                                 //> res14: List[Int] = List(5, 4, 3, 2, 1, 2, 5, 4, 3, 2, 1)
+	v updated (5, 6)                          //> res15: List[Int] = List(1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5)
+	v indexOf 7                               //> res16: Int = -1
+	v contains 7                              //> res17: Boolean = false
+	
+	def last[T](l: List[T]): T = l match {
+		case Nil => throw new Error("Nothing to return")
+		case lHead :: Nil => lHead
+		case lHead :: lTail => last(lTail)
+	}                                         //> last: [T](l: List[T])T
+	last[Int](v)                              //> res18: Int = 5
+	
+	def init[T](l: List[T]): List[T] = l match {
+		case Nil => throw new Error("init of Nil")
+		case lHead :: Nil => Nil
+		case lHead :: lTail => lHead :: init[T](lTail)
+	}                                         //> init: [T](l: List[T])List[T]
+	init[Int](v)                              //> res19: List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4)
+	
+	def concat[T](l1: List[T], l2: List[T]): List[T] = l1 match {
+		case Nil => l2
+		case l1Head :: l1Tail => l1Head :: concat[T](l1Tail, l2)
+	}                                         //> concat: [T](l1: List[T], l2: List[T])List[T]
+	concat[Int](s, t)                         //> res20: List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4, 5)
+	
+	def reverse[T](l: List[T]): List[T] = l match {
+		case Nil => Nil
+		case lHead :: lTail => reverse(lTail) ::: lHead :: Nil
+	}                                         //> reverse: [T](l: List[T])List[T]
+	reverse[Int](u)                           //> res21: List[Int] = List(5, 4, 3, 2, 1, 2, 5, 4, 3, 2, 1)
+	
+	def removeAt[T](l: List[T], n: Int): List[T] = l match {
+		case Nil => Nil
+		case lHead :: lTail => if (n > 0) lHead :: removeAt(lTail, n - 1) else if (n == 0) lTail else Nil
+	}                                         //> removeAt: [T](l: List[T], n: Int)List[T]
+	removeAt(s, 0)                            //> res22: List[Int] = List(2, 3, 4, 5)
+	removeAt(s, 1)                            //> res23: List[Int] = List(1, 3, 4, 5)
+	(s take 2) ++ (s drop 3)                  //> res24: List[Int] = List(1, 2, 4, 5)
+	(s take 3) ++ (s drop 4)                  //> res25: List[Int] = List(1, 2, 3, 5)
+	removeAt(s, 4)                            //> res26: List[Int] = List(1, 2, 3, 4)
+	removeAt(s, 5)                            //> res27: List[Int] = List(1, 2, 3, 4, 5)
+	removeAt(s, 6)                            //> res28: List[Int] = List(1, 2, 3, 4, 5)
+	
+	def flatten[T](l: List[Any]): List[Any] = l match {
+		case Nil => Nil
+		case (lHead :: Nil) :: lTail => lHead :: flatten(lTail)
+		case lHead :: lTail => lHead :: flatten(lTail)
+	}                                         //> flatten: [T](l: List[Any])List[Any]
+	flatten(List(List(1, 1), 2, List(3, List(5, 8))))
+                                                  //> res29: List[Any] = List(List(1, 1), 2, List(3, List(5, 8)))
 }
