@@ -1,3 +1,5 @@
+import math.Ordering
+
 object test {
   /*
   println("Welcome to the Scala worksheet")
@@ -181,4 +183,57 @@ object test {
 	}                                         //> flatten: [T](l: List[Any])List[Any]
 	flatten(List(List(1, 1), 2, List(3, List(5, 8))))
                                                   //> res29: List[Any] = List(List(1, 1), 2, List(3, List(5, 8)))
+
+	/*
+	def msort[T](l: List[T])(lt: (T, T) => Boolean): List[T] = {
+		val n = l.length / 2
+		if (n == 0) l
+		else {
+			def merge(l1: List[T], l2: List[T]): List [T] = (l1, l2) match {
+				case (Nil, l2) => l2
+				case (l1, Nil) => l1
+				case (l1Head :: l1Tail, l2Head :: l2Tail) => if (lt(l1Head, l2Head)) l1Head :: merge(l1Tail, l2) else l2Head :: merge(l1, l2Tail)
+			}
+			merge(msort(l take n)(lt), msort(l drop n)(lt))
+		}
+	}
+
+	msort(u)((x, y) => (x < y))
+	msort("pineapple" :: "apple" :: "orange" :: "banaba" :: Nil)((x, y) => x.compareTo(y) < 0)
+	*/
+
+	/*
+	def msort[T](l: List[T])(ord: Ordering[T]): List[T] = {
+		val n = l.length / 2
+		if (n == 0) l
+		else {
+			def merge(l1: List[T], l2: List[T]): List [T] = (l1, l2) match {
+				case (Nil, l2) => l2
+				case (l1, Nil) => l1
+				case (l1Head :: l1Tail, l2Head :: l2Tail) => if (ord.lt(l1Head, l2Head)) l1Head :: merge(l1Tail, l2) else l2Head :: merge(l1, l2Tail)
+			}
+			merge(msort(l take n)(ord), msort(l drop n)(ord))
+		}
+	}                                         //> msort: [T](l: List[T])(ord: scala.math.Ordering[T])List[T]
+	
+	msort(u)(Ordering.Int)                    //> res30: List[Int] = List(1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5)
+	msort("pineapple" :: "apple" :: "orange" :: "banaba" :: Nil)(Ordering.String)
+  */                                              //> res31: List[String] = List(apple, banaba, orange, pineapple)
+
+	def msort[T](l: List[T])(implicit ord: Ordering[T]): List[T] = {
+		val n = l.length / 2
+		if (n == 0) l
+		else {
+			def merge(l1: List[T], l2: List[T]): List [T] = (l1, l2) match {
+				case (Nil, l2) => l2
+				case (l1, Nil) => l1
+				case (l1Head :: l1Tail, l2Head :: l2Tail) => if (ord.lt(l1Head, l2Head)) l1Head :: merge(l1Tail, l2) else l2Head :: merge(l1, l2Tail)
+			}
+			merge(msort(l take n), msort(l drop n))
+		}
+	}                                         //> msort: [T](l: List[T])(ord: scala.math.Ordering[T])List[T]
+	
+	msort(u)                                  //> res30: List[Int] = List(1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5)
+	msort("pineapple" :: "apple" :: "orange" :: "banaba" :: Nil)
+                                                  //> res31: List[String] = List(apple, banaba, orange, pineapple)
 }
