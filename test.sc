@@ -214,11 +214,11 @@ object test {
 			}
 			merge(msort(l take n)(ord), msort(l drop n)(ord))
 		}
-	}                                         //> msort: [T](l: List[T])(ord: scala.math.Ordering[T])List[T]
+	}
 	
-	msort(u)(Ordering.Int)                    //> res30: List[Int] = List(1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5)
+	msort(u)(Ordering.Int)
 	msort("pineapple" :: "apple" :: "orange" :: "banaba" :: Nil)(Ordering.String)
-  */                                              //> res31: List[String] = List(apple, banaba, orange, pineapple)
+  */
 
 	def msort[T](l: List[T])(implicit ord: Ordering[T]): List[T] = {
 		val n = l.length / 2
@@ -231,7 +231,7 @@ object test {
 			}
 			merge(msort(l take n), msort(l drop n))
 		}
-	}                                         //> msort: [T](l: List[T])(ord: scala.math.Ordering[T])List[T]
+	}                                         //> msort: [T](l: List[T])(implicit ord: scala.math.Ordering[T])List[T]
 	
 	msort(u)                                  //> res30: List[Int] = List(1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5)
 	msort("pineapple" :: "apple" :: "orange" :: "banaba" :: Nil)
