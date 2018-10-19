@@ -118,25 +118,28 @@ object test {
   e3.show                                         //> res3: String = (2 + x) * y
   
 	val s: List[Int] = List(1, 2, 3, 4, 5)    //> s  : List[Int] = List(1, 2, 3, 4, 5)
-	val t = 2 :: s                            //> t  : List[Int] = List(2, 1, 2, 3, 4, 5)
+	val t = -2 :: s                           //> t  : List[Int] = List(-2, 1, 2, 3, 4, 5)
 	
 	t.length                                  //> res4: Int = 6
 	t.last                                    //> res5: Int = 5
-	t.init                                    //> res6: List[Int] = List(2, 1, 2, 3, 4)
-	t.head                                    //> res7: Int = 2
+	t.init                                    //> res6: List[Int] = List(-2, 1, 2, 3, 4)
+	t.head                                    //> res7: Int = -2
 	t.tail                                    //> res8: List[Int] = List(1, 2, 3, 4, 5)
-	t take 3                                  //> res9: List[Int] = List(2, 1, 2)
+	t take 3                                  //> res9: List[Int] = List(-2, 1, 2)
 	t drop 3                                  //> res10: List[Int] = List(3, 4, 5)
 	t apply 2                                 //> res11: Int = 2
 	t(3)                                      //> res12: Int = 3
-	t(0)                                      //> res13: Int = 2
+	t(0)                                      //> res13: Int = -2
 	
-	val u = s ::: t                           //> u  : List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4, 5)
-	val v = s ++ t                            //> v  : List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4, 5)
-	u.reverse                                 //> res14: List[Int] = List(5, 4, 3, 2, 1, 2, 5, 4, 3, 2, 1)
+	val u = s ::: t                           //> u  : List[Int] = List(1, 2, 3, 4, 5, -2, 1, 2, 3, 4, 5)
+	val v = s ++ t                            //> v  : List[Int] = List(1, 2, 3, 4, 5, -2, 1, 2, 3, 4, 5)
+	u.reverse                                 //> res14: List[Int] = List(5, 4, 3, 2, 1, -2, 5, 4, 3, 2, 1)
 	v updated (5, 6)                          //> res15: List[Int] = List(1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5)
 	v indexOf 7                               //> res16: Int = -1
 	v contains 7                              //> res17: Boolean = false
+	
+	val w = List('a', 'c', 'w', 'b', 'q', 'a', 'b', 'b', 'c', 'a', 'w', 'a', 'c', 'q', 'b', 'a', 'c')
+                                                  //> w  : List[Char] = List(a, c, w, b, q, a, b, b, c, a, w, a, c, q, b, a, c)
 	
 	def last[T](l: List[T]): T = l match {
 		case Nil => throw new Error("Nothing to return")
@@ -150,19 +153,19 @@ object test {
 		case lHead :: Nil => Nil
 		case lHead :: lTail => lHead :: init[T](lTail)
 	}                                         //> init: [T](l: List[T])List[T]
-	init[Int](v)                              //> res19: List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4)
+	init[Int](v)                              //> res19: List[Int] = List(1, 2, 3, 4, 5, -2, 1, 2, 3, 4)
 	
 	def concat[T](l1: List[T], l2: List[T]): List[T] = l1 match {
 		case Nil => l2
 		case l1Head :: l1Tail => l1Head :: concat[T](l1Tail, l2)
 	}                                         //> concat: [T](l1: List[T], l2: List[T])List[T]
-	concat[Int](s, t)                         //> res20: List[Int] = List(1, 2, 3, 4, 5, 2, 1, 2, 3, 4, 5)
+	concat[Int](s, t)                         //> res20: List[Int] = List(1, 2, 3, 4, 5, -2, 1, 2, 3, 4, 5)
 	
 	def reverse[T](l: List[T]): List[T] = l match {
 		case Nil => Nil
 		case lHead :: lTail => reverse(lTail) ::: lHead :: Nil
 	}                                         //> reverse: [T](l: List[T])List[T]
-	reverse[Int](u)                           //> res21: List[Int] = List(5, 4, 3, 2, 1, 2, 5, 4, 3, 2, 1)
+	reverse[Int](u)                           //> res21: List[Int] = List(5, 4, 3, 2, 1, -2, 5, 4, 3, 2, 1)
 	
 	def removeAt[T](l: List[T], n: Int): List[T] = l match {
 		case Nil => Nil
@@ -215,10 +218,10 @@ object test {
 			merge(msort(l take n)(ord), msort(l drop n)(ord))
 		}
 	}
-	
+
 	msort(u)(Ordering.Int)
 	msort("pineapple" :: "apple" :: "orange" :: "banaba" :: Nil)(Ordering.String)
-  */
+	*/
 
 	def msort[T](l: List[T])(implicit ord: Ordering[T]): List[T] = {
 		val n = l.length / 2
@@ -233,7 +236,58 @@ object test {
 		}
 	}                                         //> msort: [T](l: List[T])(implicit ord: scala.math.Ordering[T])List[T]
 	
-	msort(u)                                  //> res30: List[Int] = List(1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5)
+	msort(u)                                  //> res30: List[Int] = List(-2, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5)
 	msort("pineapple" :: "apple" :: "orange" :: "banaba" :: Nil)
                                                   //> res31: List[String] = List(apple, banaba, orange, pineapple)
+
+	/*
+	case class Rectangle(length: Int = 0, width: Int = 0)
+
+	object Rectangle {
+		def area(r: Rectangle) = r.length * r.width
+	}
+
+	val r = Rectangle(5, 4)
+	Rectangle.area(r)
+	*/
+
+	// List Transformation
+	def squareList(l: List[Int]): List[Int] = l map (x => x * x)
+                                                  //> squareList: (l: List[Int])List[Int]
+	squareList(u)                             //> res32: List[Int] = List(1, 4, 9, 16, 25, 4, 1, 4, 9, 16, 25)
+
+	// List Filtration
+	def posElem(l: List[Int]): List[Int] = l filter (x => x > 0)
+                                                  //> posElem: (l: List[Int])List[Int]
+	posElem(u)                                //> res33: List[Int] = List(1, 2, 3, 4, 5, 1, 2, 3, 4, 5)
+
+	u filter (x => x > 2)                     //> res34: List[Int] = List(3, 4, 5, 3, 4, 5)
+	u filterNot (x => x > 2)                  //> res35: List[Int] = List(1, 2, -2, 1, 2)
+	u partition (x => x > 2)                  //> res36: (List[Int], List[Int]) = (List(3, 4, 5, 3, 4, 5),List(1, 2, -2, 1, 2
+                                                  //| ))
+	u takeWhile (x => x < 3)                  //> res37: List[Int] = List(1, 2)
+	u dropWhile (x => x < 3)                  //> res38: List[Int] = List(3, 4, 5, -2, 1, 2, 3, 4, 5)
+	u span (x => x < 3)                       //> res39: (List[Int], List[Int]) = (List(1, 2),List(3, 4, 5, -2, 1, 2, 3, 4, 5
+                                                  //| ))
+
+	def pack[T](l: List[T]): List[List[T]] = l match {
+		case Nil => Nil
+		case lHead :: lTail => (l takeWhile (x => (x == lHead))) :: pack(l dropWhile (x => (x == lHead)))
+	}                                         //> pack: [T](l: List[T])List[List[T]]
+	pack(msort(u))                            //> res40: List[List[Int]] = List(List(-2), List(1, 1), List(2, 2), List(3, 3),
+                                                  //|  List(4, 4), List(5, 5))
+	pack(msort(w))                            //> res41: List[List[Char]] = List(List(a, a, a, a, a), List(b, b, b, b), List(
+                                                  //| c, c, c, c), List(q, q), List(w, w))
+
+	def encode[T](l: List[T]): List[(T, Int)] = pack(l) map (x => (x.head, x.length))
+                                                  //> encode: [T](l: List[T])List[(T, Int)]
+	encode(msort(u))                          //> res42: List[(Int, Int)] = List((-2,1), (1,2), (2,2), (3,2), (4,2), (5,2))
+	encode(msort(w))                          //> res43: List[(Char, Int)] = List((a,5), (b,4), (c,4), (q,2), (w,2))
+
+	u reduceLeft (_ + _)                      //> res44: Int = 28
+	u reduceRight (_ * _)                     //> res45: Int = -28800
+	(u foldLeft 0)(_ + _)                     //> res46: Int = 28
+
+	(w foldRight List(' '))(_ :: _)           //> res47: List[Char] = List(a, c, w, b, q, a, b, b, c, a, w, a, c, q, b, a, c,
+                                                  //|   )
 }
