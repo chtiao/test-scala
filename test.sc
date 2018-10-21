@@ -288,6 +288,23 @@ object test {
 	u reduceRight (_ * _)                     //> res45: Int = -28800
 	(u foldLeft 0)(_ + _)                     //> res46: Int = 28
 
-	(w foldRight List(' '))(_ :: _)           //> res47: List[Char] = List(a, c, w, b, q, a, b, b, c, a, w, a, c, q, b, a, c,
-                                                  //|   )
+	(w foldRight w)(_ :: _)                   //> res47: List[Char] = List(a, c, w, b, q, a, b, b, c, a, w, a, c, q, b, a, c,
+                                                  //|  a, c, w, b, q, a, b, b, c, a, w, a, c, q, b, a, c)
+	val x = Vector(2, 1, 4, 3)                //> x  : scala.collection.immutable.Vector[Int] = Vector(2, 1, 4, 3)
+
+	val a = Array(1, 2, 3, 55)                //> a  : Array[Int] = Array(1, 2, 3, 55)
+	a map (x => x * x)                        //> res48: Array[Int] = Array(1, 4, 9, 3025)
+
+	val b: Range = 1 to 10                    //> b  : Range = Range 1 to 10
+	b map (x => x * x)                        //> res49: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 4, 9, 16, 25,
+                                                  //|  36, 49, 64, 81, 100)
+	val c: Range = 1 until 10                 //> c  : Range = Range 1 until 10
+	c map (x => x * x)                        //> res50: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 4, 9, 16, 25,
+                                                  //|  36, 49, 64, 81)
+
+	val d: Range = 1 to 10 by 4               //> d  : Range = inexact Range 1 to 10 by 4
+	d map (x => x * x)                        //> res51: scala.collection.immutable.IndexedSeq[Int] = Vector(1, 25, 81)
+
+	val e: Range = 10 to 1 by -4              //> e  : Range = inexact Range 10 to 1 by -4
+	e map (x => x * x)                        //> res52: scala.collection.immutable.IndexedSeq[Int] = Vector(100, 36, 4)
 }
