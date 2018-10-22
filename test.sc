@@ -336,4 +336,26 @@ object test {
                                                   //| (8,3), (8,4), (8,5), (8,6), (8,7)), Vector((9,1), (9,2), (9,3), (9,4), (9,5
                                                   //| ), (9,6), (9,7)), Vector((10,1), (10,2), (10,3), (10,4), (10,5), (10,6), (1
                                                   //| 0,7)))
+
+	val v1 = Vector(2.0, 3.5, 1.3)            //> v1  : scala.collection.immutable.Vector[Double] = Vector(2.0, 3.5, 1.3)
+	val v2 = Vector(3.2, 1.0, 2.0)            //> v2  : scala.collection.immutable.Vector[Double] = Vector(3.2, 1.0, 2.0)
+	def scalarProduct(x: Vector[Double], y: Vector[Double]): Double = {
+		//((x zip y) map (xy => xy._1 * xy._2)) sum
+		((x zip y) map {case (x, y) => x * y}) sum
+	}                                         //> scalarProduct: (x: Vector[Double], y: Vector[Double])Double
+	scalarProduct(v1, v2)                     //> res61: Double = 12.5
+
+	def isPrime(n: Int): Boolean = {
+		//!((2 until n) exists (x => (n / x) * x == n))
+		(2 until n) forall (d => n % d > 0)
+	}                                         //> isPrime: (n: Int)Boolean
+	isPrime(4)                                //> res62: Boolean = false
+	isPrime(5)                                //> res63: Boolean = true
+	isPrime(6)                                //> res64: Boolean = false
+	isPrime(7)                                //> res65: Boolean = true
+	isPrime(8)                                //> res66: Boolean = false
+	isPrime(9)                                //> res67: Boolean = false
+	isPrime(10)                               //> res68: Boolean = false
+	isPrime(11)                               //> res69: Boolean = true
+	
 }
