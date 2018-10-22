@@ -307,4 +307,33 @@ object test {
 
 	val e: Range = 10 to 1 by -4              //> e  : Range = inexact Range 10 to 1 by -4
 	e map (x => x * x)                        //> res52: scala.collection.immutable.IndexedSeq[Int] = Vector(100, 36, 4)
+
+	u exists (x => x < 0)                     //> res53: Boolean = true
+	u forall (x => x > 0)                     //> res54: Boolean = false
+	u forall (x => x > -2)                    //> res55: Boolean = false
+	u forall (x => x >= -2)                   //> res56: Boolean = true
+
+	val uw = u zip w                          //> uw  : List[(Int, Char)] = List((1,a), (2,c), (3,w), (4,b), (5,q), (-2,a), (
+                                                  //| 1,b), (2,b), (3,c), (4,a), (5,w))
+  uw unzip                                        //> res57: (List[Int], List[Char]) = (List(1, 2, 3, 4, 5, -2, 1, 2, 3, 4, 5),Li
+                                                  //| st(a, c, w, b, q, a, b, b, c, a, w))
+
+	u flatMap (x => List(x, x * x))           //> res58: List[Int] = List(1, 1, 2, 4, 3, 9, 4, 16, 5, 25, -2, 4, 1, 1, 2, 4, 
+                                                  //| 3, 9, 4, 16, 5, 25)
+
+	u sum                                     //> res59: Int = 28
+
+	val M = 10                                //> M  : Int = 10
+	val N = 7                                 //> N  : Int = 7
+	(1 to M) map (x => (1 to N) map (y => (x, y)))
+                                                  //> res60: scala.collection.immutable.IndexedSeq[scala.collection.immutable.Ind
+                                                  //| exedSeq[(Int, Int)]] = Vector(Vector((1,1), (1,2), (1,3), (1,4), (1,5), (1,
+                                                  //| 6), (1,7)), Vector((2,1), (2,2), (2,3), (2,4), (2,5), (2,6), (2,7)), Vector
+                                                  //| ((3,1), (3,2), (3,3), (3,4), (3,5), (3,6), (3,7)), Vector((4,1), (4,2), (4,
+                                                  //| 3), (4,4), (4,5), (4,6), (4,7)), Vector((5,1), (5,2), (5,3), (5,4), (5,5), 
+                                                  //| (5,6), (5,7)), Vector((6,1), (6,2), (6,3), (6,4), (6,5), (6,6), (6,7)), Vec
+                                                  //| tor((7,1), (7,2), (7,3), (7,4), (7,5), (7,6), (7,7)), Vector((8,1), (8,2), 
+                                                  //| (8,3), (8,4), (8,5), (8,6), (8,7)), Vector((9,1), (9,2), (9,3), (9,4), (9,5
+                                                  //| ), (9,6), (9,7)), Vector((10,1), (10,2), (10,3), (10,4), (10,5), (10,6), (1
+                                                  //| 0,7)))
 }
