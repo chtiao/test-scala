@@ -337,25 +337,54 @@ object test {
                                                   //| ), (9,6), (9,7)), Vector((10,1), (10,2), (10,3), (10,4), (10,5), (10,6), (1
                                                   //| 0,7)))
 
-	val v1 = Vector(2.0, 3.5, 1.3)            //> v1  : scala.collection.immutable.Vector[Double] = Vector(2.0, 3.5, 1.3)
-	val v2 = Vector(3.2, 1.0, 2.0)            //> v2  : scala.collection.immutable.Vector[Double] = Vector(3.2, 1.0, 2.0)
-	def scalarProduct(x: Vector[Double], y: Vector[Double]): Double = {
-		//((x zip y) map (xy => xy._1 * xy._2)) sum
-		((x zip y) map {case (x, y) => x * y}) sum
-	}                                         //> scalarProduct: (x: Vector[Double], y: Vector[Double])Double
-	scalarProduct(v1, v2)                     //> res61: Double = 12.5
-
 	def isPrime(n: Int): Boolean = {
 		//!((2 until n) exists (x => (n / x) * x == n))
 		(2 until n) forall (d => n % d > 0)
 	}                                         //> isPrime: (n: Int)Boolean
-	isPrime(4)                                //> res62: Boolean = false
-	isPrime(5)                                //> res63: Boolean = true
-	isPrime(6)                                //> res64: Boolean = false
-	isPrime(7)                                //> res65: Boolean = true
-	isPrime(8)                                //> res66: Boolean = false
-	isPrime(9)                                //> res67: Boolean = false
-	isPrime(10)                               //> res68: Boolean = false
-	isPrime(11)                               //> res69: Boolean = true
+	isPrime(4)                                //> res61: Boolean = false
+	isPrime(5)                                //> res62: Boolean = true
+	isPrime(6)                                //> res63: Boolean = false
+	isPrime(7)                                //> res64: Boolean = true
+	isPrime(8)                                //> res65: Boolean = false
+	isPrime(9)                                //> res66: Boolean = false
+	isPrime(10)                               //> res67: Boolean = false
+	isPrime(11)                               //> res68: Boolean = true
+
+	(1 until N) map (i => (1 until i) map (j => (i, j))) flatten
+                                                  //> res69: scala.collection.immutable.IndexedSeq[(Int, Int)] = Vector((2,1), (3
+                                                  //| ,1), (3,2), (4,1), (4,2), (4,3), (5,1), (5,2), (5,3), (5,4), (6,1), (6,2), 
+                                                  //| (6,3), (6,4), (6,5))
 	
+	(1 until N) flatMap (i => (1 until i) map (j => (i, j)))
+                                                  //> res70: scala.collection.immutable.IndexedSeq[(Int, Int)] = Vector((2,1), (3
+                                                  //| ,1), (3,2), (4,1), (4,2), (4,3), (5,1), (5,2), (5,3), (5,4), (6,1), (6,2), 
+                                                  //| (6,3), (6,4), (6,5))
+	
+	(1 until N) flatMap (i => (1 until i) map (j => (i, j))) filter (p => isPrime(p._1 + p._2))
+                                                  //> res71: scala.collection.immutable.IndexedSeq[(Int, Int)] = Vector((2,1), (3
+                                                  //| ,2), (4,1), (4,3), (5,2), (6,1), (6,5))
+
+	for (i <- 1 until N; j <- 1 until i if isPrime(i + j)) yield (i, j)
+                                                  //> res72: scala.collection.immutable.IndexedSeq[(Int, Int)] = Vector((2,1), (3
+                                                  //| ,2), (4,1), (4,3), (5,2), (6,1), (6,5))
+
+	val v1 = Vector(2.0, 3.5, 1.3)            //> v1  : scala.collection.immutable.Vector[Double] = Vector(2.0, 3.5, 1.3)
+	val v2 = Vector(3.2, 1.0, 2.0)            //> v2  : scala.collection.immutable.Vector[Double] = Vector(3.2, 1.0, 2.0)
+	def scalarProduct(x: Vector[Double], y: Vector[Double]): Double = {
+		/* version 1
+		((x zip y) map (xy => xy._1 * xy._2)) sum
+		*/
+		
+		/* versuib 2
+		((x zip y) map {case (u, v) => u * v}) sum
+		*/
+		
+		/* version 3 */
+		(for ((u, v) <- (x zip y)) yield u * v) sum
+	}                                         //> scalarProduct: (x: Vector[Double], y: Vector[Double])Double
+	scalarProduct(v1, v2)                     //> res73: Double = 12.5
+
+	def queens(n: Int): Set[List[Int]] = {
+		
+	}
 }
